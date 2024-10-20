@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthacks Project</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Health Parameters Form</h1>
+            <div class="inputBox">
+                <input placeholder="Write here..." class = "parameter" type="number" required="" id="age" min = "0" max = "120">
+                <label>Age</label>
+            </div>
+            <div class="inputBox">
+                <input placeholder="Write here..." class = "parameter" type="number" required="" id="sex" min = "0" max = "1">
+                <label>Sex</label>
+            </div>
+            <div class="inputBox">
+                <input placeholder="Write here..." class = "parameter" type="text" required="" id="cp" min = "1" max = "4">
+                <label>Chest Pain Type</label>
+            </div>
+            <div class="inputBox">
+                <input placeholder="Write here..." required="" id="trestbps" class = "parameter" type = "number">
+                <label>Resting Blood Pressure</label>
+            </div>
+            <div class="inputBox">
+                <input placeholder="Write here..." class = "parameter" type="te" required="" id="chol" >
+                <label>Serum Cholesterol (mg/dl)</label>
+            </div>
+            <div class="inputBox">
+                <input placeholder="Write here..." required="" id="fbs" class = "parameter" type = "number" min = "0" max = "1">
+                <label>Fasting Blood Sugar</label>
+            </div>
+
+            <div class="inputBox">
+                <input placeholder="Write here..." class = "parameter" type="number" required="" id="restecg" min = "0" max = "2">
+                <label>Resting ECG Results</label>
+            </div>
+            <div class="inputBox">
+                <input placeholder="Write here..." class = "parameter" type="number" required="" id="thalach">
+                <label>Max Heart Rate Achieved</label>
+            </div>
+            <div class="inputBox">
+                <input placeholder="Write here..." class = "parameter" type="number" required="" id="exang" min = "0" max = "1">
+                <label>Exercise Induced Angina</label>
+            </div>
+            <div class="inputBox">
+                <input placeholder="Write here..." class = "parameter" type="number" required="" id="oldpeak">
+                <label>Oldpeak</label>
+            </div> 
+            <div class="inputBox">
+                <input placeholder="Write here..." class = "parameter" type="number" required="" id="slope">
+                <label>Slope of ST Segment</label>
+            </div>
+            <div class="inputBox">
+                <input placeholder="Write here..." class = "parameter" type="number" required="" id="ca">
+                <label>Number of Major Vessels</label>
+            </div>
+        
+        <div class="inputBox">
+            <input placeholder="Write here..." class = "parameter" type="number" required="" id="thal" min = "0" max = "2">
+            <label>Thalassemia</label>
+        </div>
+        
+        <div class="button-row">
+            <button id="submitButton">Submit</button>
+        </div>
+        <p id="outputLabel"></p>
+    </div>
+    <script>
+        var age = document.getElementById("age");
+        var sex = document.getElementById("sex");
+        var cp = document.getElementById("cp");
+        var bps = document.getElementById("trestbps");
+        var chol = document.getElementById("chol");
+        var fbs = document.getElementById("fbs");
+        var restecg = document.getElementById("restecg");
+        var thalach = document.getElementById("thalach");
+        var exang = document.getElementById("exang");
+        var oldpeak = document.getElementById("oldpeak");
+        var age = document.getElementById("slope");
+        var thal = document.getElementById("thal");
+        document.getElementById('submitButton').addEventListener('click', function() {
+            var params = document.getElementsByClassName("parameter");
+            const userInput = []
+            for (var i = 0; i<params.length; i++){
+                userInput.push(params[i].value);
+            }
+            console.log(age.innerText);
+            
+            fetch('/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ data: userInput }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('outputLabel').textContent = data.result;
+            });
+        });
+    </script>
+    <script src="scripts/script.js"></script>
+    <style>
+        body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333333;
+    text-align: center;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.inputBox {
+    position: relative;
+    width: calc(50% - 10px);
+    margin-bottom: 20px;
+}
+
+.inputBox input {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333333;
+    background-color: #f9f9f9;
+    transition: all 0.3s;
+}
+
+.inputBox label {
+    position: absolute;
+    left: 10px;
+    top: -12px;
+    background-color: #ffffff;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #666666;
+    pointer-events: none;
+    transition: all 0.3s;
+}
+
+.inputBox input:focus {
+    border-color: #333333;
+    background-color: #ffffff;
+}
+
+.button-row {
+    text-align: center;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333333;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #555555;
+}
+
+#outputLabel {
+    margin-top: 20px;
+    text-align: center;
+    color: #333333;
+    font-size: 16px;
+}
+
+    </style>
+</body>
+</html>
